@@ -19,7 +19,8 @@ setup(
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
-        'console_scripts': ['service = raspi_ros.service_member_function:main',
+        'console_scripts': ['service = raspi_ros.service_tool_manager:main',
+        'tool_service = raspi_ros.service_tool:main',
         'client = raspi_ros.client_member_function:main',
         ],
     },
