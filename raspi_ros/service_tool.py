@@ -1,27 +1,26 @@
-from example_interfaces.srv import AddTwoInts
+
 from digital_interface_msgs.msg import DigitalState
 
-from digital_interface_msgs.srv import PinStateRead,PinStateWrite
+from digital_interface_msgs.srv import PinStateRead,PinStateWrite,PinStateWriteResponse
 
 
-import rclpy
-from rclpy.node import Node
+import rospy
+
 
 
 from gpiozero import LED, DigitalInputDevice
 from gpiozero import DigitalOutputDevice
 
-class ToolService(Node):
+class ToolService(object):
 
     def __init__(self):
-        super().__init__('tool_manager')
         self.state=False
         self.led = LED(10)
         number_of_pins=24
         self.pin_interactions=[0]*number_of_pins
 
-        self.sr_srv = self.create_service(PinStateRead, 'pin_read', self.pin_read)
-        self.pin_write_srv = self.create_service(PinStateWrite, 'pin_write', self.pin_write)
+        self.sr_srv = rospy.Service('pin_read', PinStateRead, self.pin_read)
+        self.pin_write_srv = rospy.Service('pin_write',PinStateWrite,  self.pin_write)
     
         digital_input_pins=[20,21]
 
@@ -51,10 +50,10 @@ class ToolService(Node):
         return response
 
 
-    def pin_write(self,request,response):
+    def pin_write(self,request):
 
         interaction=self.pin_interactions[request.position-1]
-
+        response=PinStateWriteResponse()
         if isinstance(interaction, DigitalOutputDevice):
             interaction.value=request.value
             response.success=True
@@ -86,13 +85,13 @@ class ToolService(Node):
 
 
 def main(args=None):
-    rclpy.init(args=args)
+    rospy.init_node('tool')
 
     tool_service = ToolService()
 
-    rclpy.spin(tool_service)
+    rospy.spin()
 
-    rclpy.shutdown()
+    rospy.shutdown()
 
 
 if __name__ == '__main__':
