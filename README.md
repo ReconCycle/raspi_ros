@@ -3,8 +3,8 @@
 
 Test digital service
 
-'''sh
+```sh
 
-rosservice call /pin_write 15 0
+$ rosservice call /pin_write 15 0
 
-'''
+```
