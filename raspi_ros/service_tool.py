@@ -7,10 +7,11 @@ from digital_interface_msgs.srv import PinStateRead,PinStateWrite,PinStateWriteR
 import rospy
 
 import yaml 
+
 from rospy_message_converter import message_converter
 
 
-from gpiozero import LED, DigitalInputDevice
+from gpiozero import DigitalInputDevice
 from gpiozero import DigitalOutputDevice
 
 
