@@ -3,7 +3,7 @@ from digital_interface_msgs.msg import DigitalState,RaspiConfig
 
 from digital_interface_msgs.srv import PinStateRead,PinStateWrite,PinStateWriteResponse,PinStateReadResponse
 
-
+from std_srvs.srv import Trigger,TriggerResponse
 import rospy
 
 import yaml 
@@ -64,9 +64,12 @@ class ToolService(object):
     def __init__(self,node_name):
 
         self.node_name=node_name
+        self.path='test'
+        self.restart_service=rospy.Service('restart_node', Trigger, self.restart)
 
-        path='test'
-        self.configure_pins(path)
+
+        
+        self.configure_pins(self.path)
      
 
     def configure_pins(self,configuration_path):
@@ -105,9 +108,25 @@ class ToolService(object):
                 pin_service=PinWriteService(hardware_interface,pin_configs[i]['service_name'])
                 self.pin_services.append(pin_service)
             
-            
+    def restart(self,request): 
 
-  
+        #release all pins
+        for i in self.pin_interactions:
+            if (i!=0):
+           
+                i.close()
+
+        #delete all runing services
+        for i in self.pin_services:
+    
+            i.service.shutdown('restarting tool node')
+
+
+        self.configure_pins(self.path)
+
+
+
+        return TriggerResponse(True,'Restarted')
 
   
 

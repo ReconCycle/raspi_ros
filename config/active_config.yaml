@@ -75,12 +75,12 @@ pin_configs:
   available_config: [DigitalInput, DigitalOutput]
   config_name: ''
   pin_number: 15
-  service_name: 'erw'
+  service_name: 'erwrt'
 - actual_config: DigitalOutput
   available_config: [DigitalInput, DigitalOutput]
   config_name: ''
   pin_number: 16
-  service_name: 'ert'
+  service_name: 'erttz'
 - actual_config: empty
   available_config: [DigitalInput, DigitalOutput]
   config_name: ''

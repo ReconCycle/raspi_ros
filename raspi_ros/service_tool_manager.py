@@ -22,12 +22,13 @@ def config_to_dict(config):
 class ManagerService(object):
 
     def __init__(self):
-        
+
 
 
         self.sendback_current_config(ConfigRead)
-        self.read_config_srv = self.create_service(ReadConfig, 'read_raspi_config', self.sendback_current_config)
-        self.set_config_srv = self.create_service(SetConfig, 'set_raspi_config', self.change_current_config)
+        self.read_config_srv = rospy.Service('config_read_current',ConfigRead,  self.sendback_current_config)
+        self.template_config_srv = rospy.Service('config_read_template',ConfigRead, self.sendback_template_config)
+        self.set_config_srv =rospy.Service('config_set_new',ConfigSet, self.change_current_config)
 
 
     def sendback_current_config(self,request):
@@ -48,6 +49,21 @@ class ManagerService(object):
 
 
         return response
+
+    def sendback_template_config(self,request):
+        response=ConfigReadResponse()
+        response.config.config_name='test'
+        print('sendback')
+
+        config_dict=config_to_dict(response.config)
+
+
+        with open(r'/ros_ws/src/raspi_ros/config/tool_config_file.yaml', 'w') as file:
+            documents = yaml.dump(config_dict, file)
+
+
+        return response
+
 
     def change_current_config(self,request,response):
         config=request.config
