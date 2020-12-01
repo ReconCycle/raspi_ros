@@ -1,97 +1,125 @@
 
-from digital_interface_msgs.msg import DigitalState
+from digital_interface_msgs.msg import DigitalState,RaspiConfig
 
-from digital_interface_msgs.srv import PinStateRead,PinStateWrite,PinStateWriteResponse
+from digital_interface_msgs.srv import PinStateRead,PinStateWrite,PinStateWriteResponse,PinStateReadResponse
 
 
 import rospy
 
+import yaml 
+from rospy_message_converter import message_converter
 
 
 from gpiozero import LED, DigitalInputDevice
 from gpiozero import DigitalOutputDevice
 
+
+class PinService(object):
+    def __init__(self,pin_interaction,service_name,service_type):
+        self.pin_interaction=pin_interaction
+        self.service = rospy.Service(service_name, service_type, self.callback)
+     
+    def callback(self):
+        pass
+
+class PinReadService(PinService):
+
+    def __init__(self,pin_interaction,service_name):
+        service_type=PinStateRead
+        PinService.__init__(self,pin_interaction,service_name,service_type)
+
+    def callback(self,request):
+
+        interaction=self.pin_interaction
+        response=PinStateReadResponse()
+       
+        response.state.value=interaction.value
+       
+        
+        return response
+
+class PinWriteService(PinService):
+
+    def __init__(self,pin_interaction,service_name):
+        service_type=PinStateWrite
+        PinService.__init__(self,pin_interaction,service_name,service_type)
+
+
+
+    def callback(self,request):
+
+        interaction=self.pin_interaction
+        response=PinStateWriteResponse()
+        response.state.value=interaction.value
+        response.state.position=request.position
+
+        
+        return response
+
+
+
 class ToolService(object):
 
-    def __init__(self):
-        self.state=False
-        self.led = LED(10)
-        number_of_pins=24
-        self.pin_interactions=[0]*number_of_pins
+    def __init__(self,node_name):
 
-        self.sr_srv = rospy.Service('pin_read', PinStateRead, self.pin_read)
-        self.pin_write_srv = rospy.Service('pin_write',PinStateWrite,  self.pin_write)
-    
-        digital_input_pins=[20,21]
+        self.node_name=node_name
 
+        path='test'
+        self.configure_pins(path)
      
-        for i in digital_input_pins:
-            self.pin_interactions[i-1]=DigitalInputDevice(i)
-          
 
-        digital_output_pins=[14,15]
+    def configure_pins(self,configuration_path):
 
-     
-        for i in digital_output_pins:
-            self.pin_interactions[i-1]=DigitalOutputDevice(i)
+        #read active configuration
+        with open(r'/ros_ws/src/raspi_ros/config/active_config.yaml', 'r') as file:
+            config= yaml.load(file)
 
+        # services presented to ros system
+        self.pin_services=[]
 
-    def pin_read(self,request,response):
+        # hardware interaction (set,read...)
+        self.pin_interactions=[]
+        #print(config)
+        pin_configs=config['pin_configs']
+        for i in range(0, len(pin_configs)):
 
-        interaction=self.pin_interactions[request.position-1]
+            if pin_configs[i]['actual_config']=='empty':
 
-        if isinstance(interaction, DigitalInputDevice):
-            response.state.value=interaction.value
-            response.state.position=request.position
-        else:
-            error=True
-     
-        
-        return response
+                self.pin_interactions.append(0)
 
+            elif pin_configs[i]['actual_config']=='DigitalInput':
+                hardware_interface=DigitalInputDevice(pin_configs[i]['pin_number'])
+ 
+                self.pin_interactions.append(hardware_interface)
+                #join service and interaction in one class
+                pin_service=PinReadService(hardware_interface,pin_configs[i]['service_name'])
+                self.pin_services.append(pin_service)
 
-    def pin_write(self,request):
+            elif pin_configs[i]['actual_config']=='DigitalOutput':
 
-        interaction=self.pin_interactions[request.position-1]
-        response=PinStateWriteResponse()
-        if isinstance(interaction, DigitalOutputDevice):
-            interaction.value=request.value
-            response.success=True
-        else:
-            response.success=False
-            response.error_msg='Not output'
-     
-        
-        return response
+                hardware_interface=DigitalOutputDevice(pin_configs[i]['pin_number'])
+
+                self.pin_interactions.append(hardware_interface)
+                #join service and interaction in one class
+                pin_service=PinWriteService(hardware_interface,pin_configs[i]['service_name'])
+                self.pin_services.append(pin_service)
+            
+            
+
   
-    def toogle(self,request,response):
-        print('got it')
 
-        if self.state==False:
-            self.led.on()
-            self.state=True
-            print('got it true')
-
-        elif self.state==True:
-            self.led.off()
-            self.state=False
-            print('got it false')
-
-
-        
-
-
-        return response
+  
 
 
 def main(args=None):
-    rospy.init_node('tool')
+    node_name='tool1'
+    rospy.init_node(node_name)
 
-    tool_service = ToolService()
+    tool_service = ToolService(node_name)
 
     rospy.spin()
 
-    rospy.shutdown()
+    #rospy.on_shutdown()
 
 
 if __name__ == '__main__':

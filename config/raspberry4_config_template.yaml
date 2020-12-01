@@ -76,7 +76,7 @@ pin_configs:
   config_name: ''
   pin_number: 15
   service_name: ''
-- actual_config: DigitalOutput
+- actual_config: empty
   available_config: [DigitalInput, DigitalOutput]
   config_name: ''
   pin_number: 16

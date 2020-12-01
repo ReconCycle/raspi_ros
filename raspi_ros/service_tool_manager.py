@@ -1,12 +1,11 @@
-from example_interfaces.srv import AddTwoInts
+
 from digital_interface_msgs.msg import DigitalState
 
-from digital_interface_msgs.srv import ReadConfig, SetConfig
+from digital_interface_msgs.srv import ConfigRead, ConfigSet,ConfigReadResponse
 
 from gpiozero import DigitalOutputDevice
 import yaml 
-import rclpy
-from rclpy.node import Node
+import rospy
 
 
 
@@ -20,15 +19,19 @@ def config_to_dict(config):
 
 
 
-class ManagerService(Node):
+class ManagerService(object):
 
     def __init__(self):
-        super().__init__('tool_manager')
+        
+
+
+        self.sendback_current_config(ConfigRead)
         self.read_config_srv = self.create_service(ReadConfig, 'read_raspi_config', self.sendback_current_config)
         self.set_config_srv = self.create_service(SetConfig, 'set_raspi_config', self.change_current_config)
 
 
-    def sendback_current_config(self,request,response):
+    def sendback_current_config(self,request):
+        response=ConfigReadResponse()
         response.config.config_name='test'
         print('sendback')
 
@@ -40,7 +43,7 @@ class ManagerService(Node):
         dict_file = [{'sports' : ['soccer', 'football', 'basketball', 'cricket', 'hockey', 'table tennis']},
         {'countries' : ['Pakistan', 'USA', 'India', 'China', 'Germany', 'France', 'Spain']}]
 
-        with open(r'/home/ubuntu/reconcycle/dev_ws/src/raspi_ros/config/tool_config_file.yaml', 'w') as file:
+        with open(r'/ros_ws/src/raspi_ros/config/tool_config_file.yaml', 'w') as file:
             documents = yaml.dump(config_dict, file)
 
 
@@ -54,13 +57,13 @@ class ManagerService(Node):
 
 
 def main(args=None):
-    rclpy.init(args=args)
+    
 
     manager_service = ManagerService()
 
-    rclpy.spin(manager_service)
+    rospy.spin(manager_service)
 
-    rclpy.shutdown()
+    rospy.shutdown()
 
 
 if __name__ == '__main__':

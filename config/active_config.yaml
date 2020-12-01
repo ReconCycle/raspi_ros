@@ -61,26 +61,26 @@ pin_configs:
   config_name: ''
   pin_number: 12
   service_name: ''
-- actual_config: empty
+- actual_config: DigitalInput
   available_config: [DigitalInput, DigitalOutput]
   config_name: ''
   pin_number: 13
-  service_name: ''
+  service_name: 'beri13'
 - actual_config: empty
   available_config: [DigitalInput, DigitalOutput]
   config_name: ''
   pin_number: 14
   service_name: ''
-- actual_config: empty
+- actual_config: DigitalOutput
   available_config: [DigitalInput, DigitalOutput]
   config_name: ''
   pin_number: 15
-  service_name: ''
+  service_name: 'erw'
 - actual_config: DigitalOutput
   available_config: [DigitalInput, DigitalOutput]
   config_name: ''
   pin_number: 16
-  service_name: ''
+  service_name: 'ert'
 - actual_config: empty
   available_config: [DigitalInput, DigitalOutput]
   config_name: ''
