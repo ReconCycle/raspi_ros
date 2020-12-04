@@ -1,0 +1,16 @@
+version: '3'
+
+networks:
+  ros:
+    driver: bridge
+
+services:
+  rosmaster:
+    image: reconcycle:devel
+    command: stdbuf -o L roscore
+    networks:
+      - ros
+    environment:
+      - "ROS_HOSTNAME=rosmaster"
+    volumes:
+      - .:/devel_ws
