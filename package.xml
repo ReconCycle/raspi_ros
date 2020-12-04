@@ -19,7 +19,7 @@
   <buildtool_depend>catkin</buildtool_depend>-->
 
 
-
+  <build_depend>digital_interfaces_msgs</build_depend>-->
    <depend>digital_interfaces_msgs</depend>
   <!-- <run_depend>message_runtime</run_depend> -->
 
