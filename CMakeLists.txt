@@ -100,7 +100,7 @@ catkin_package(
 #  LIBRARIES RasPiGPIO
 CATKIN_DEPENDS digital_interface_msgs
 #  DEPENDS system_lib
-#)
+)
 
 ###########
 ## Build ##
