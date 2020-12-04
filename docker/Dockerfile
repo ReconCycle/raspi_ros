@@ -33,9 +33,11 @@ WORKDIR /ros_ws
 
 # Source stuff
 SHELL ["/bin/bash", "-c"] 
-RUN source /opt/ros/$ROS_DISTRO/setup.bash && catkin build
-# RUN catkin build
+RUN source /opt/ros/$ROS_DISTRO/setup.bash  && catkin build
+
 RUN source devel/setup.bash
+
+
 
 # Clear apt cache.
 RUN apt clean
