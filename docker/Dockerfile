@@ -27,8 +27,14 @@ RUN apt-get install ros-kinetic-rospy-message-converter
 WORKDIR /ros_ws/src
 
 RUN git clone https://github.com/ReconCycle/robot_module_msgs.git
+RUN  git show-ref
+
 RUN git clone --branch ros1_devel https://github.com/ReconCycle/digital_interface_msgs.git
+RUN  git show-ref
+
 RUN git clone --branch ros1_devel https://github.com/ReconCycle/raspi_ros.git
+RUN  git show-ref
+
 WORKDIR /ros_ws
 
 # Source stuff
