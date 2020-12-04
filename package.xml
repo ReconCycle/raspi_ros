@@ -18,7 +18,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>-->
  <buildtool_depend>digital_interfaces_msgs</buildtool_depend>-->
-
+<build_depend>digital_interfaces_msgs</build_depend>
 
 
    <depend>digital_interfaces_msgs</depend>
