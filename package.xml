@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package>
+<package format="2">
   <name>raspi_ros</name>
   <version>0.1.0</version>
   <description>The raspi_ros package</description>
@@ -18,8 +18,10 @@
 
   <buildtool_depend>catkin</buildtool_depend>-->
  <buildtool_depend>digital_interfaces_msgs</buildtool_depend>-->
-   <build_depend>digital_interfaces_msgs</build_depend>
-   <!--depend>digital_interfaces_msgs</depend-->
+
+
+
+   <depend>digital_interfaces_msgs</depend>
   <!-- <run_depend>message_runtime</run_depend> -->
 
   <!-- The export tag contains other, unspecified, tags -->
