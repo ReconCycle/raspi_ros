@@ -39,7 +39,7 @@ RUN git --git-dir=/ros_ws/src/robot_module_msgs/.git rev-parse --short HEAD
 
 
 WORKDIR /ros_ws
-
+RUN catkin init
 # Source stuff
 SHELL ["/bin/bash", "-c"] 
 

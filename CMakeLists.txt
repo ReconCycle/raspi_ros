@@ -95,10 +95,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
-#catkin_package(
+catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES RasPiGPIO
-# CATKIN_DEPENDS digital_interface_msgs
+CATKIN_DEPENDS digital_interface_msgs
 #  DEPENDS system_lib
 #)
 
@@ -110,7 +110,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Your package locations should be listed before other locations
 include_directories(
 #include
-${catkin_INCLUDE_DIRS}
+  ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -154,9 +154,9 @@ ${catkin_INCLUDE_DIRS}
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
- install(PROGRAMS
-  service_tool.py
-  service_tool_manager.py
+ catkin_install_python(PROGRAMS
+  src/service_tool.py
+  src/service_tool_manager.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 
@@ -175,11 +175,11 @@ ${catkin_INCLUDE_DIRS}
 # )
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
- install(FILES
+ #install(FILES
 #   # myfile1
 #   # myfile2
-   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
- )
+ #  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+ #)
 
 #############
 ## Testing ##
