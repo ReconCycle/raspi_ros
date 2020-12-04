@@ -65,7 +65,7 @@ pin_configs:
   available_config: [DigitalInput, DigitalOutput]
   config_name: ''
   pin_number: 13
-  service_name: 'beri13'
+  service_name: beri13
 - actual_config: empty
   available_config: [DigitalInput, DigitalOutput]
   config_name: ''
@@ -75,12 +75,12 @@ pin_configs:
   available_config: [DigitalInput, DigitalOutput]
   config_name: ''
   pin_number: 15
-  service_name: 'erwrt'
+  service_name: erwrt
 - actual_config: DigitalOutput
   available_config: [DigitalInput, DigitalOutput]
   config_name: ''
   pin_number: 16
-  service_name: 'erttz'
+  service_name: erttz
 - actual_config: empty
   available_config: [DigitalInput, DigitalOutput]
   config_name: ''
@@ -116,11 +116,11 @@ pin_configs:
   config_name: ''
   pin_number: 23
   service_name: ''
-- actual_config: empty
+- actual_config: DigitalInput
   available_config: [DigitalInput, DigitalOutput]
   config_name: ''
   pin_number: 24
-  service_name: ''
+  service_name: Hope
 - actual_config: empty
   available_config: [DigitalInput, DigitalOutput]
   config_name: ''
