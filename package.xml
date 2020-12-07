@@ -17,14 +17,15 @@
   <license>TODO</license>
 
 
-  <depend>digital_interfaces_msgs</depend>
-  <depend>std_servs</depend>
+  <depend>digital_interface_msgs</depend>
+
+
+  <depend>std_srvs</depend>
    
 <exec_depend>rospy_message_converter</exec_depend>
 
 <exec_depend>rosservice</exec_depend>
 <exec_depend>rospy</exec_depend>
-
 
   <buildtool_depend>catkin</buildtool_depend>
 

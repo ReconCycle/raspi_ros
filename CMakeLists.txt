@@ -158,7 +158,7 @@ include_directories(
  catkin_install_python(PROGRAMS
   src/service_tool.py
   src/service_tool_manager.py
-   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 
 ## Mark executables and/or libraries for installation
