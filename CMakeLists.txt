@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy 
   std_msgs 
   digital_interface_msgs
+  std_srvs
 )    
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -98,7 +99,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES RasPiGPIO
-CATKIN_DEPENDS digital_interface_msgs
+CATKIN_DEPENDS digital_interface_msgs std_srvs 
 #  DEPENDS system_lib
 )
 
