@@ -15,7 +15,7 @@ class ManagerService(object):
 
     def __init__(self):
 
-        self.path='/ros_ws/src/raspi_ros/config/active_config.yaml'
+        self.path='/ros_ws/src/raspi_ros/acitve_config/active_config.yaml'
         self.template_path='/ros_ws/src/raspi_ros/config/raspberry4_config_template.yaml'
         rospy.wait_for_service('restart_node')
         self.restart_proxy= rospy.ServiceProxy('restart_node',Trigger)
