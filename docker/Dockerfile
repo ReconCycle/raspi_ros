@@ -30,10 +30,10 @@ RUN git clone https://github.com/ReconCycle/robot_module_msgs.git
 
 
 RUN git clone --branch ros1_devel https://github.com/ReconCycle/digital_interface_msgs.git
-
-RUN git --git-dir=/ros_ws/src/digital_interface_msgs/.git rev-parse --short HEAD
-
-RUN git --git-dir=/ros_ws/src/robot_module_msgs/.git rev-parse --short HEAD
+RUN git clone --branch ros1_devel https://github.com/ReconCycle/raspi_ros.git
+#RUN git --git-dir=/ros_ws/src/digital_interface_msgs/.git rev-parse --short HEAD
+#RUN git --git-dir=/ros_ws/src/raspi_ros/.git rev-parse --short HEAD
+#RUN git --git-dir=/ros_ws/src/robot_module_msgs/.git rev-parse --short HEAD
 
 
 
@@ -47,35 +47,6 @@ SHELL ["/bin/bash", "-c"]
 RUN source /opt/ros/$ROS_DISTRO/setup.bash  && catkin build
 
 RUN source devel/setup.bash
-
-
-WORKDIR /ros_ws/src
-
-
-
-RUN git clone --branch ros1_devel https://github.com/ReconCycle/raspi_ros.git
-
-
-RUN git --git-dir=/ros_ws/src/raspi_ros/.git rev-parse --short HEAD
-
-
-
-
-
-
-WORKDIR /ros_ws
-
-# Source stuff
-SHELL ["/bin/bash", "-c"] 
-
-
-RUN source /opt/ros/$ROS_DISTRO/setup.bash  && catkin build
-
-RUN source devel/setup.bash
-
-
-
-
 
 
 # Clear apt cache.
