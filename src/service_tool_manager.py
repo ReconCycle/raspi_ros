@@ -1,4 +1,4 @@
-
+#! /usr/bin/env python
 from digital_interface_msgs.msg import RaspiConfig
 from digital_interface_msgs.srv import ConfigRead, ConfigSet,ConfigReadResponse,ConfigSetResponse
 from std_srvs.srv import Trigger
@@ -17,7 +17,7 @@ class ManagerService(object):
 
         self.path='/ros_ws/src/raspi_ros/acitve_config/active_config.yaml'
         self.template_path='/ros_ws/src/raspi_ros/config/raspberry4_config_template.yaml'
-        rospy.wait_for_service('restart_node')
+        #rospy.wait_for_service('restart_node')
         self.restart_proxy= rospy.ServiceProxy('restart_node',Trigger)
         # service for reading active configuration
         self.read_config_srv = rospy.Service('config_read_current',ConfigRead,  self.sendback_current_config)

@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs 
   digital_interface_msgs
   std_srvs
+  roslaunch
 )    
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -176,11 +177,11 @@ include_directories(
 # )
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
- #install(FILES
-#   # myfile1
+ install(FILES
+launch/reconcycle.launch
 #   # myfile2
- #  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
- #)
+   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+ )
 
 #############
 ## Testing ##

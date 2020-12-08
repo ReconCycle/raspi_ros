@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 import rospy
 import rosservice
 from digital_interface_msgs.srv import ConfigRead, ConfigSet,ConfigSetRequest

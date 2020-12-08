@@ -1,4 +1,4 @@
-
+#! /usr/bin/env python
 from digital_interface_msgs.msg import DigitalState,RaspiConfig
 
 from digital_interface_msgs.srv import PinStateRead,PinStateWrite,PinStateWriteResponse,PinStateReadResponse
@@ -16,6 +16,7 @@ from gpiozero import DigitalOutputDevice
 
 
 class PinService(object):
+
     def __init__(self,pin_interaction,service_name,service_type):
         self.pin_interaction=pin_interaction
         self.service = rospy.Service(service_name, service_type, self.callback)
@@ -64,7 +65,7 @@ class ToolService(object):
     def __init__(self,node_name):
 
         self.node_name=node_name
-        self.path='test'
+        self.path='/ros_ws/src/raspi_ros/active_config/active_config.yaml'
         self.restart_service=rospy.Service('restart_node', Trigger, self.restart)
 
 
@@ -75,7 +76,7 @@ class ToolService(object):
     def configure_pins(self,configuration_path):
 
         #read active configuration
-        with open(r'/ros_ws/src/raspi_ros/config/active_config.yaml', 'r') as file:
+        with open(self.path, 'r') as file:
             config= yaml.load(file)
 
         # services presented to ros system
