@@ -1,0 +1,185 @@
+config_name: test
+hardware_type: ''
+pin_configs:
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''
+- !!python/object/new:digital_interface_msgs.msg._OnePinConfig.OnePinConfig
+  state:
+  - ''
+  - 0
+  - ''
+  - []
+  - ''

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package>
+<package format="2">
   <name>raspi_ros</name>
   <version>0.1.0</version>
   <description>The raspi_ros package</description>
@@ -16,8 +16,21 @@
   <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
   <license>TODO</license>
 
+
+  <depend>digital_interface_msgs</depend>
+
+
+  <depend>std_srvs</depend>
+   
+<exec_depend>rospy_message_converter</exec_depend>
+
+<exec_depend>rosservice</exec_depend>
+<exec_depend>rospy</exec_depend>
+<exec_depend>roslaunch</exec_depend>
+
   <buildtool_depend>catkin</buildtool_depend>
-  <depend>digital_interfaces_msgs</depend>
+
+
   <!-- <run_depend>message_runtime</run_depend> -->
 
   <!-- The export tag contains other, unspecified, tags -->

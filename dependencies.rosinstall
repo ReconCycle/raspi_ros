@@ -1,4 +1,0 @@
-- git:
-    local-name: digital_interface_msgs
-    uri: git@github.com:ReconCycle/digital_interface_msgs.git
-    version: main
