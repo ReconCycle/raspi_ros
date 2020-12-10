@@ -1,5 +1,11 @@
 <?xml version="1.0"?>
 <launch>
-  <node name="tool" pkg="raspi_ros" type="service_tool.py" />
-<node name="tool_manager" pkg="raspi_ros" type="service_tool_manager.py" />
+
+
+<arg name="base" value="noname_tool"/>
+
+<group>
+  <node name="$(arg base)" pkg="raspi_ros" type="service_tool.py" />
+<node name="$(arg base)_manager" pkg="raspi_ros" type="service_tool_manager.py" />
+</group>
 </launch>
