@@ -66,7 +66,7 @@ class ToolService(object):
 
         self.node_name=node_name
         self.path='/ros_ws/src/raspi_ros/active_config/active_config.yaml'
-        self.restart_service=rospy.Service('restart_node', Trigger, self.restart)
+        self.restart_service=rospy.Service('~restart_node', Trigger, self.restart)
 
 
         
@@ -111,7 +111,17 @@ class ToolService(object):
             
     def restart(self,request): 
 
-        #release all pins
+        self.clean()
+
+
+        self.configure_pins(self.path)
+
+
+        return TriggerResponse(True,'Restarted')
+
+    def clean(self):
+
+                #release all pins
         for i in self.pin_interactions:
             if (i!=0):
            
@@ -122,25 +132,19 @@ class ToolService(object):
     
             i.service.shutdown('restarting tool node')
 
-
-        self.configure_pins(self.path)
-
-
-
-        return TriggerResponse(True,'Restarted')
-
   
 
 
-def main(args=None):
-    node_name='tool1'
+def main(args='noname_tool'):
+    node_name=args+'_service'
+    print(node_name)
     rospy.init_node(node_name)
 
     tool_service = ToolService(node_name)
 
     rospy.spin()
 
-    #rospy.on_shutdown()
+    rospy.on_shutdown(tool_service.clean)
 
 
 if __name__ == '__main__':

@@ -17,14 +17,15 @@ class ManagerService(object):
 
         self.path='/ros_ws/src/raspi_ros/acitve_config/active_config.yaml'
         self.template_path='/ros_ws/src/raspi_ros/config/raspberry4_config_template.yaml'
+
         #rospy.wait_for_service('restart_node')
         self.restart_proxy= rospy.ServiceProxy('restart_node',Trigger)
-        # service for reading active configuration
-        self.read_config_srv = rospy.Service('config_read_current',ConfigRead,  self.sendback_current_config)
 
-       
-        self.template_config_srv = rospy.Service('config_read_template',ConfigRead, self.sendback_template_config)
-        self.set_config_srv =rospy.Service('config_set_new',ConfigSet, self.change_current_config)
+        # service for reading active configuration
+        self.read_config_srv = rospy.Service('~config_read_current',ConfigRead,  self.sendback_current_config)
+
+        self.template_config_srv = rospy.Service('~config_read_template',ConfigRead, self.sendback_template_config)
+        self.set_config_srv =rospy.Service('~config_set_new',ConfigSet, self.change_current_config)
 
 
     def sendback_current_config(self,request):
@@ -72,15 +73,22 @@ class ManagerService(object):
 
         return response(True,'')
 
+    def clean(self):
+        self.read_config_srv.shutdown('stop manager tool node')
 
-def main(args=None):
+        self.template_config_srv.shutdown('stop manager tool node')
+        self.set_config_srv.shutdown('stop manager tool node')
+
+
+def main(args='noname_tool'):
     
-    node_name='tool_manager'
+    node_name=args+'manager'
     rospy.init_node(node_name)
     manager_service = ManagerService()
 
     rospy.spin()
-
+    
+    rospy.on_shutdown(manager_service.clean)
     
 
 
