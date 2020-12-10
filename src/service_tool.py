@@ -137,7 +137,7 @@ class ToolService(object):
 
 def main(args='noname_tool'):
     node_name=args+'_service'
-    print(node_name)
+    
     rospy.init_node(node_name)
 
     tool_service = ToolService(node_name)

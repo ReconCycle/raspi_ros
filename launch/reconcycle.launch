@@ -2,10 +2,10 @@
 <launch>
 
 
-<arg name="base" value="noname_tool"/>
+<arg name="base" value="$(env THIS_RAS_NAME)"/>
 
 <group>
   <node name="$(arg base)" pkg="raspi_ros" type="service_tool.py" />
-<node name="$(arg base)_manager" pkg="raspi_ros" type="service_tool_manager.py" />
+  <node name="$(arg base)_manager" pkg="raspi_ros" type="service_tool_manager.py" />
 </group>
 </launch>
