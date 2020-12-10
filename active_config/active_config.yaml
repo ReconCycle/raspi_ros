@@ -71,16 +71,16 @@ pin_configs:
   config_name: ''
   pin_number: 14
   service_name: ''
-- actual_config: DigitalOutput
+- actual_config: empty
   available_config: [DigitalInput, DigitalOutput]
   config_name: ''
   pin_number: 15
-  service_name: erwrt
-- actual_config: DigitalOutput
+  service_name: ''
+- actual_config: empty
   available_config: [DigitalInput, DigitalOutput]
   config_name: ''
   pin_number: 16
-  service_name: erttz
+  service_name: ''
 - actual_config: empty
   available_config: [DigitalInput, DigitalOutput]
   config_name: ''
