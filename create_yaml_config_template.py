@@ -17,7 +17,7 @@ config_template.hardware_type='raspberry 4'
 for i in range(0, len(config_template.pin_configs)):
     config_template.pin_configs[i].pin_number=i+1 
     config_template.pin_configs[i].actual_config='empty'
-    config_template.pin_configs[i].available_config=['DigitalInput','DigitalOutput']
+    config_template.pin_configs[i].available_config=['DigitalInput','DigitalOutput','empty']
 
 config_dict=message_converter.convert_ros_message_to_dictionary(config_template)
 
