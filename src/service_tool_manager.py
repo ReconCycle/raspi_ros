@@ -20,9 +20,11 @@ class ManagerService(object):
         dirname = path.dirname(__file__)
         template_filename = path.join(dirname, '..','config/raspberry4_config_template.yaml')
         self.template_path=template_filename
-
+        
+        tool_name=rospy.get_name()
+        tool_name=tool_name.replace('_manager','/')
         #rospy.wait_for_service('restart_node')
-        self.restart_proxy= rospy.ServiceProxy('restart_node',Trigger)
+        self.restart_proxy= rospy.ServiceProxy(tool_name+'restart_node',Trigger)
 
         # service for reading active configuration
         self.read_config_srv = rospy.Service('~config_read_current',ConfigRead,  self.sendback_current_config)
