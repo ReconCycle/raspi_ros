@@ -8,23 +8,29 @@ import rospy
 import yaml 
 from rospy_message_converter import message_converter
 
-import os.path
-
+import os.path as path
+import argparse
 
 class ManagerService(object):
 
-    def __init__(self):
+    def __init__(self,active_config_path):
 
-        self.path='/ros_ws/src/raspi_ros/acitve_config/active_config.yaml'
-        self.template_path='/ros_ws/src/raspi_ros/config/raspberry4_config_template.yaml'
+        
+        self.path=active_config_path
+        dirname = path.dirname(__file__)
+        template_filename = path.join(dirname, '..','config/raspberry4_config_template.yaml')
+        self.template_path=template_filename
+        
+        tool_name=rospy.get_name()
+        tool_name=tool_name.replace('_manager','/')
         #rospy.wait_for_service('restart_node')
-        self.restart_proxy= rospy.ServiceProxy('restart_node',Trigger)
-        # service for reading active configuration
-        self.read_config_srv = rospy.Service('config_read_current',ConfigRead,  self.sendback_current_config)
+        self.restart_proxy= rospy.ServiceProxy(tool_name+'restart_node',Trigger)
 
-       
-        self.template_config_srv = rospy.Service('config_read_template',ConfigRead, self.sendback_template_config)
-        self.set_config_srv =rospy.Service('config_set_new',ConfigSet, self.change_current_config)
+        # service for reading active configuration
+        self.read_config_srv = rospy.Service('~config_read_current',ConfigRead,  self.sendback_current_config)
+
+        self.template_config_srv = rospy.Service('~config_read_template',ConfigRead, self.sendback_template_config)
+        self.set_config_srv =rospy.Service('~config_set_new',ConfigSet, self.change_current_config)
 
 
     def sendback_current_config(self,request):
@@ -72,19 +78,45 @@ class ManagerService(object):
 
         return response(True,'')
 
+    def clean(self):
+        self.read_config_srv.shutdown('stop manager tool node')
 
-def main(args=None):
+        self.template_config_srv.shutdown('stop manager tool node')
+        self.set_config_srv.shutdown('stop manager tool node')
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--active_config_path', default=None, type=str)
+
+    print(rospy.myargv()[1:])
+    args=parser.parse_args(rospy.myargv()[1:])
     
-    node_name='tool_manager'
+    print(args)
+    config_path=args.active_config_path
+    rospy.loginfo(config_path) 
+
+    node_name='noname_tool_manager'
     rospy.init_node(node_name)
-    manager_service = ManagerService()
+
+    if config_path==None:
+        dirname = path.dirname(__file__)
+        active_config_path= path.join(dirname, '..','acitve_config/active_config.yaml')
+    else:
+        active_config_path= path.join(config_path,'active_config/active_config.yaml')
+
+    rospy.logdebug(active_config_path)
+
+    manager_service = ManagerService(active_config_path)
 
     rospy.spin()
-
+    
+    rospy.on_shutdown(manager_service.clean)
     
 
 
 if __name__ == '__main__':
+
     main()
 
 

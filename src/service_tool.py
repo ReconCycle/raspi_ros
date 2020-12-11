@@ -15,6 +15,10 @@ from gpiozero import DigitalInputDevice
 from gpiozero import DigitalOutputDevice
 
 
+import os.path as path
+import argparse
+import sys
+
 class PinService(object):
 
     def __init__(self,pin_interaction,service_name,service_type):
@@ -62,11 +66,11 @@ class PinWriteService(PinService):
 
 class ToolService(object):
 
-    def __init__(self,node_name):
+    def __init__(self,node_name,active_config_path):
 
         self.node_name=node_name
-        self.path='/ros_ws/src/raspi_ros/active_config/active_config.yaml'
-        self.restart_service=rospy.Service('restart_node', Trigger, self.restart)
+        self.path=active_config_path
+        self.restart_service=rospy.Service('~restart_node', Trigger, self.restart)
 
 
         
@@ -111,7 +115,17 @@ class ToolService(object):
             
     def restart(self,request): 
 
-        #release all pins
+        self.clean()
+
+
+        self.configure_pins(self.path)
+
+
+        return TriggerResponse(True,'Restarted')
+
+    def clean(self):
+
+                #release all pins
         for i in self.pin_interactions:
             if (i!=0):
            
@@ -122,28 +136,45 @@ class ToolService(object):
     
             i.service.shutdown('restarting tool node')
 
-
-        self.configure_pins(self.path)
-
-
-
-        return TriggerResponse(True,'Restarted')
-
   
 
 
-def main(args=None):
-    node_name='tool1'
+def main():
+
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--active_config_path', default=None, type=str)
+
+    print(rospy.myargv()[1:])
+    args=parser.parse_args(rospy.myargv()[1:])
+    
+    print(args)
+    config_path=args.active_config_path
+    rospy.loginfo(config_path)
+
+    node_name='noname_tool_service'
+    
     rospy.init_node(node_name)
 
-    tool_service = ToolService(node_name)
+
+    if config_path==None:
+        dirname = path.dirname(__file__)
+        active_config_path= path.join(dirname, '..','active_config/active_config.yaml')
+    else:
+        active_config_path= path.join(config_path,'active_config/active_config.yaml')
+
+    rospy.loginfo(active_config_path)
+
+    tool_service = ToolService(node_name,active_config_path)
 
     rospy.spin()
 
-    #rospy.on_shutdown()
+    rospy.on_shutdown(tool_service.clean)
 
 
 if __name__ == '__main__':
+
+
     main()
 
 

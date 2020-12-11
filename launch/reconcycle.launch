@@ -1,5 +1,12 @@
 <?xml version="1.0"?>
 <launch>
-  <node name="tool" pkg="raspi_ros" type="service_tool.py" />
-<node name="tool_manager" pkg="raspi_ros" type="service_tool_manager.py" />
+
+
+<arg name="base" value="$(env THIS_RAS_NAME)"/>
+<arg name="active_config_path" value="/reconcycle_config/"/>
+
+<group>
+  <node name="$(arg base)" pkg="raspi_ros" type="service_tool.py" args="--active_config_path $(arg active_config_path)"  output="screen"/>
+  <node name="$(arg base)_manager" pkg="raspi_ros" type="service_tool_manager.py" args="--active_config_path $(arg active_config_path)"  output="screen"/>
+</group>
 </launch>
