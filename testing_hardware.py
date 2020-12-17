@@ -8,6 +8,9 @@ from time import sleep
 if True:
     pwm = PWMOutputDevice(12)
 
+    while True:
+        pwm.value=0.15
+
     for b in range(100):
 
         pwm.value = b/100.0

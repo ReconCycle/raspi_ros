@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 from digital_interface_msgs.msg import DigitalState,RaspiConfig
 
-from digital_interface_msgs.srv import PinStateRead,PinStateWrite,PinStateWriteResponse,PinStateReadResponse
+from digital_interface_msgs.srv import PinStateRead,PinStateWrite,PinStateWriteResponse,PinStateReadResponse,PWMWrite,PWMWriteResponse
 
 from std_srvs.srv import Trigger,TriggerResponse
 import rospy
@@ -13,14 +13,14 @@ from rospy_message_converter import message_converter
 
 from gpiozero import DigitalInputDevice
 from gpiozero import DigitalOutputDevice
-
+from gpiozero import PWMOutputDevice
 
 import os.path as path
 import argparse
 import sys
 
 class PinService(object):
-
+    #general pin service class
     def __init__(self,pin_interaction,service_name,service_type):
         self.pin_interaction=pin_interaction
         self.service = rospy.Service(service_name, service_type, self.callback)
@@ -40,7 +40,9 @@ class PinReadService(PinService):
         response=PinStateReadResponse()
        
         response.state.value=interaction.value
-       
+        
+        response.state.position=interaction.pin.number
+        response.success=True
         
         return response
 
@@ -55,9 +57,32 @@ class PinWriteService(PinService):
     def callback(self,request):
 
         interaction=self.pin_interaction
+
+        interaction.value=request.value
         response=PinStateWriteResponse()
-        response.state.value=interaction.value
-        response.state.position=request.position
+        response.success=True
+
+        
+        return response
+
+
+class PinPWMService(PinService):
+
+    def __init__(self,pin_interaction,service_name):
+        service_type=PWMWrite
+        PinService.__init__(self,pin_interaction,service_name,service_type)
+
+
+
+    def callback(self,request):
+
+        interaction=self.pin_interaction
+        interaction.value=float(request.value)
+     
+
+        response=PWMWriteResponse()
+        
+        response.success=True
 
         
         return response
@@ -90,6 +115,8 @@ class ToolService(object):
         self.pin_interactions=[]
         #print(config)
         pin_configs=config['pin_configs']
+
+        #fill configs
         for i in range(0, len(pin_configs)):
 
             if pin_configs[i]['actual_config']=='empty':
@@ -112,6 +139,21 @@ class ToolService(object):
                 #join service and interaction in one class
                 pin_service=PinWriteService(hardware_interface,pin_configs[i]['service_name'])
                 self.pin_services.append(pin_service)
+
+            elif pin_configs[i]['actual_config']=='PWM':
+                if not pin_configs[i]['config_parameters']:
+                    hardware_interface=PWMOutputDevice(pin_configs[i]['pin_number'])
+
+                else:
+                    hardware_interface=PWMOutputDevice(pin_configs[i]['pin_number'], frequency=int(pin_configs[i]['config_parameters'][0]),initial_value=float(pin_configs[i]['config_parameters'][1]))
+                    print(hardware_interface.frequency)
+                    print(pin_configs[i]['config_parameters'][1])
+                self.pin_interactions.append(hardware_interface)
+                #join service and interaction in one class
+                pin_service=PinPWMService(hardware_interface,pin_configs[i]['service_name'])
+                self.pin_services.append(pin_service)
+
+
             
     def restart(self,request): 
 
