@@ -15,12 +15,13 @@ The node has restart service that when trigered, closes all its active services,
 
 Is the node for managing configuration files. Each tool server has his manager. From this node we can trough ROS services get the empty template for config, the active config from tool server at this moment, and send the desired tool server config.
 
-When we send
+When we send desired config the manager overwritte the active config of tool server and triger the tool server restart to new config is activated in tool server.
+
+The interaction with tool manager can be done with https://github.com/ReconCycle/raspi-ros-client
 
 
-## tool client
 
-Test digital service
+## Test digital service
 
 ```sh
 
