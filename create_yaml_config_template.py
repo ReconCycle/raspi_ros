@@ -14,10 +14,19 @@ config_template=RaspiConfig()
 config_template.config_name="empty"
 config_template.hardware_type='raspberry 4'
 
+
+
 for i in range(0, len(config_template.pin_configs)):
     config_template.pin_configs[i].pin_number=i+1 
     config_template.pin_configs[i].actual_config='empty'
     config_template.pin_configs[i].available_config=['DigitalInput','DigitalOutput','empty']
+
+
+#PWM software on all, hardware on folowing
+
+for i in [12,13,18,19]:
+    config_template.pin_configs[i-1].available_config.append('PWM')
+
 
 config_dict=message_converter.convert_ros_message_to_dictionary(config_template)
 
