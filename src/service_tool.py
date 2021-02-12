@@ -93,14 +93,21 @@ class PinPWMService(PinService):
         number_of_signals=self.signal_per_angle*angle
 
         freq = number_of_signals/time
+        print(freq)
         
-        number_of_signals=int(number_of_signals)
-        
-        time_on=1/freq/2
+        interaction.frequency=freq
+        interaction.value=0.5
+        rospy.sleep(time)
+        interaction.off()
 
+
+        #number_of_signals=int(number_of_signals)
+        #print(number_of_signals)
+        #time_on=1/freq/2
+        #print(time_on)
         #interaction.value=0.5
 
-        interaction.blink(n=number_of_signals,on_time=time_on, off_time=time_on)
+        #interaction.blink(n=number_of_signals,on_time=time_on, off_time=time_on)
 
 
         response=PWMWriteResponse()
@@ -109,6 +116,8 @@ class PinPWMService(PinService):
 
         
         return response
+
+
 
 
 class PinMotorAngleService(PinService):
