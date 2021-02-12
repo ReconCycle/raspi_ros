@@ -1,27 +1,29 @@
 # raspi_ros
 
-This is ros1 package for remotly setup up hardware configuration of Raspeberry trough ROS and then also interact with this hardware interfaces trough ROS
+This is a ROS package to remotely set up the hardware configuration of Raspeberry via ROS (Tool Manager) and interact with the configured hardware interfaces via ROS (Tool Server).
 
-## tool server
+## Tool Server
 
-Is the node to interact with GPIOs on Raspberry. When node starts reads the configuration file 'actual_config' and initilize the hardware interface for each defined pin from config file and expose the interaction with pin trough the ros service.
+This ROS node enables interaction with GPIOs on the RaspberryPi. When the node is started, the configuration file 'actual_config' is read and the hardware interface for each defined pin in the configuration file is initialized. The interaction with the pin is enabled by the ROS service.
 
-Now are posible to define digital input, digital output and pwm output.
+The interaction options at the moment are the definition of a digital input, a digital output and a pwm output.
 
-The node has restart service that when trigered, closes all its active services, release pin hardwere interface, and reads the configuration file again. Then starts with new defined configuration.
-
-
-## tool manager
-
-Is the node for managing configuration files. Each tool server has his manager. From this node we can trough ROS services get the empty template for config, the active config from tool server at this moment, and send the desired tool server config.
-
-When we send desired config the manager overwritte the active config of tool server and triger the tool server restart to new config is activated in tool server.
-
-The interaction with tool manager can be done with https://github.com/ReconCycle/raspi-ros-client
+The node has a restart service that, when triggered, closes all active services, releases the pin's hardware interface and reads the configuration file again. Then it starts with the newly defined configuration.
 
 
+## Tool Manager
 
-## Test digital service
+This ROS node allows the management of RaspberryPi configuration files. Each tool server has its manager. From this node we can get the empty template for the configuration, the active configuration from the tool server at that moment and send the desired tool server configuration via the ROS services.
+
+When we send the desired configuration, the manager overwrites the active configuration of the tool server and restarts the tool server with the new configuration activated.
+
+Interaction with the tool manager can be done with https://github.com/ReconCycle/raspi-ros-client.
+
+
+
+## Examples of interaction with digital IO services
+
+
 
 ```sh
 
@@ -45,3 +47,9 @@ PWM output (/PWMsrv substitude with your service name)
 ```sh
 rosservice call /PWMsrv 0.5
 ```
+
+## Docker image 
+
+This ROS package is already preperad as Docker image: https://github.com/ReconCycle/raspi-reconcycle-docker
+
+Example of automatic RaspberryPi initilization with Docker image above: https://github.com/ReconCycle/raspberry_reconcycle_init
