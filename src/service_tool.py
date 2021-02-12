@@ -92,11 +92,15 @@ class PinPWMService(PinService):
 
         number_of_signals=self.signal_per_angle*angle
 
-        freq = int(number_of_signals/time)
+        freq = number_of_signals/time
+        
+        number_of_signals=int(number_of_signals)
+        
+        time_on=1/freq/2
 
         #interaction.value=0.5
 
-        interaction.blink(n=5)
+        interaction.blink(n=number_of_signals,on_time=time_on, off_time=time_on)
 
 
         response=PWMWriteResponse()
@@ -191,7 +195,8 @@ class ToolService(object):
 
                 self.pin_interactions.append(hardware_interface)
                 #join service and interaction in one class
-                pin_service=PinPWMService(hardware_interface,pin_configs[i]['service_name'],signal_per_angle=pin_configs[i]['config_parameters'][1])
+                print(pin_configs[i]['config_parameters'][1])
+                pin_service=PinPWMService(hardware_interface,pin_configs[i]['service_name'],signal_per_angle=float(pin_configs[i]['config_parameters'][1]))
                 self.pin_services.append(pin_service)
 
 
