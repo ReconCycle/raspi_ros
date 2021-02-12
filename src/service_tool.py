@@ -76,11 +76,11 @@ class PinWriteService(PinService):
 
 class PinPWMService(PinService):
 
-    def __init__(self,pin_interaction,service_name,signal_per_angle=1):
+    def __init__(self,pin_interaction,service_name,signal_to_angle=1):
         service_type=PWMWrite
         PinService.__init__(self,pin_interaction,service_name,service_type)
 
-        self.signal_per_angle=signal_per_angle
+        self.signal_to_angle=signal_to_angle
 
     def callback(self,request):
 
@@ -90,24 +90,24 @@ class PinPWMService(PinService):
         angle=float(request.value)
         time=float(request.time)
 
-        number_of_signals=self.signal_per_angle*angle
+        number_of_signals=angle/self.signal_to_angle
 
         freq = number_of_signals/time
-        print(freq)
+        #print(freq)
         
-        interaction.frequency=freq
-        interaction.value=0.5
-        rospy.sleep(time)
-        interaction.off()
-
-
-        #number_of_signals=int(number_of_signals)
-        #print(number_of_signals)
-        #time_on=1/freq/2
-        #print(time_on)
+        #interaction.frequency=freq
         #interaction.value=0.5
+        #rospy.sleep(time)
+        #interaction.off()
 
-        #interaction.blink(n=number_of_signals,on_time=time_on, off_time=time_on)
+
+        number_of_signals=int(number_of_signals)
+        #print(number_of_signals)
+        time_on=1/freq/2
+        #print(time_on)
+      
+
+        interaction.blink(n=number_of_signals,on_time=time_on, off_time=time_on,background=False)
 
 
         response=PWMWriteResponse()
@@ -204,8 +204,8 @@ class ToolService(object):
 
                 self.pin_interactions.append(hardware_interface)
                 #join service and interaction in one class
-                print(pin_configs[i]['config_parameters'][1])
-                pin_service=PinPWMService(hardware_interface,pin_configs[i]['service_name'],signal_per_angle=float(pin_configs[i]['config_parameters'][1]))
+                #print(pin_configs[i]['config_parameters'][1])
+                pin_service=PinPWMService(hardware_interface,pin_configs[i]['service_name'],signal_to_angle=float(pin_configs[i]['config_parameters'][1]))
                 self.pin_services.append(pin_service)
 
 
@@ -242,10 +242,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--active_config_path', default=None, type=str)
 
-    print(rospy.myargv()[1:])
+    #print(rospy.myargv()[1:])
     args=parser.parse_args(rospy.myargv()[1:])
     
-    print(args)
+    #print(args)
     config_path=args.active_config_path
     rospy.loginfo(config_path)
 
