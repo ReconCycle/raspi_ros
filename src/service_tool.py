@@ -4,6 +4,9 @@ from digital_interface_msgs.msg import DigitalState,RaspiConfig
 from digital_interface_msgs.srv import PinStateRead,PinStateWrite,PinStateWriteResponse,PinStateReadResponse,PWMWrite,PWMWriteResponse
 
 from std_srvs.srv import Trigger,TriggerResponse
+
+
+
 import rospy
 
 import yaml 
@@ -19,6 +22,9 @@ import os.path as path
 import argparse
 import sys
 
+
+
+
 class PinService(object):
     #general pin service class
     def __init__(self,pin_interaction,service_name,service_type):
@@ -27,6 +33,8 @@ class PinService(object):
      
     def callback(self):
         pass
+
+
 
 class PinReadService(PinService):
 
@@ -68,6 +76,52 @@ class PinWriteService(PinService):
 
 class PinPWMService(PinService):
 
+    def __init__(self,pin_interaction,service_name,signal_to_angle=1):
+        service_type=PWMWrite
+        PinService.__init__(self,pin_interaction,service_name,service_type)
+
+        self.signal_to_angle=signal_to_angle
+
+    def callback(self,request):
+
+        interaction=self.pin_interaction
+
+
+        angle=float(request.value)
+        time=float(request.time)
+
+        number_of_signals=angle/self.signal_to_angle
+
+        freq = number_of_signals/time
+        #print(freq)
+        
+        #interaction.frequency=freq
+        #interaction.value=0.5
+        #rospy.sleep(time)
+        #interaction.off()
+
+
+        number_of_signals=int(number_of_signals)
+        #print(number_of_signals)
+        time_on=1/freq/2
+        #print(time_on)
+      
+
+        interaction.blink(n=number_of_signals,on_time=time_on, off_time=time_on,background=False)
+
+
+        response=PWMWriteResponse()
+        
+        response.success=True
+
+        
+        return response
+
+
+
+
+class PinMotorAngleService(PinService):
+
     def __init__(self,pin_interaction,service_name):
         service_type=PWMWrite
         PinService.__init__(self,pin_interaction,service_name,service_type)
@@ -78,6 +132,7 @@ class PinPWMService(PinService):
 
         interaction=self.pin_interaction
         interaction.value=float(request.value)
+
      
 
         response=PWMWriteResponse()
@@ -86,7 +141,6 @@ class PinPWMService(PinService):
 
         
         return response
-
 
 
 class ToolService(object):
@@ -144,13 +198,14 @@ class ToolService(object):
                 if not pin_configs[i]['config_parameters']:
                     hardware_interface=PWMOutputDevice(pin_configs[i]['pin_number'])
 
-                else:
-                    hardware_interface=PWMOutputDevice(pin_configs[i]['pin_number'], frequency=int(pin_configs[i]['config_parameters'][0]),initial_value=float(pin_configs[i]['config_parameters'][1]))
-                    print(hardware_interface.frequency)
-                    print(pin_configs[i]['config_parameters'][1])
+                else:          
+                    hardware_interface=PWMOutputDevice(pin_configs[i]['pin_number'])
+                    #frequency=int([0]),initial_value=float(pin_configs[i]['config_parameters'][1])
+
                 self.pin_interactions.append(hardware_interface)
                 #join service and interaction in one class
-                pin_service=PinPWMService(hardware_interface,pin_configs[i]['service_name'])
+                #print(pin_configs[i]['config_parameters'][1])
+                pin_service=PinPWMService(hardware_interface,pin_configs[i]['service_name'],signal_to_angle=float(pin_configs[i]['config_parameters'][1]))
                 self.pin_services.append(pin_service)
 
 
@@ -187,10 +242,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--active_config_path', default=None, type=str)
 
-    print(rospy.myargv()[1:])
+    #print(rospy.myargv()[1:])
     args=parser.parse_args(rospy.myargv()[1:])
     
-    print(args)
+    #print(args)
     config_path=args.active_config_path
     rospy.loginfo(config_path)
 
