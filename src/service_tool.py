@@ -28,7 +28,7 @@ import sys
 class PinService(object):
     #general pin service class
     def __init__(self,pin_interaction,service_name,service_type):
-        self.pin_interaction=pin_interaction
+        self.pin_interaction = pin_interaction
         self.service = rospy.Service(service_name, service_type, self.callback)
      
     def callback(self):
@@ -39,7 +39,7 @@ class PinService(object):
 class PinReadService(PinService):
 
     def __init__(self,pin_interaction,service_name):
-        service_type=PinStateRead
+        service_type = PinStateRead
         PinService.__init__(self,pin_interaction,service_name,service_type)
 
     def callback(self,request):
@@ -50,7 +50,7 @@ class PinReadService(PinService):
         response.state.value=interaction.value
         
         response.state.position=interaction.pin.number
-        response.success=True
+        response.success = True
         
         return response
 
@@ -145,13 +145,16 @@ class PinMotorAngleService(PinService):
 
 class ToolService(object):
 
-    def __init__(self,node_name,active_config_path):
+    def __init__(self,node_name,active_config_path,simulate=False):
 
         self.node_name=node_name
         self.path=active_config_path
         self.restart_service=rospy.Service('~restart_node', Trigger, self.restart)
 
 
+        self.simulate = simulate
+        if simulate:
+            ROS_INFO(str(node_name)+ " node working in simulation mode")
         
         self.configure_pins(self.path)
      
@@ -178,6 +181,7 @@ class ToolService(object):
                 self.pin_interactions.append(0)
 
             elif pin_configs[i]['actual_config']=='DigitalInput':
+                
                 hardware_interface=DigitalInputDevice(pin_configs[i]['pin_number'])
  
                 self.pin_interactions.append(hardware_interface)
