@@ -1,60 +1,65 @@
 #! /usr/bin/env python
 
+import rospy
+
+class Pin(object):
+     def __init__(self,pin):
+        self.number = pin
 
 
-class BooType(type):
 
 
-    def __getattr__(self, attr):
-        print(attr)
 
-        if attr == 'pin':
-            print(attr)
-
-            
-        
-        return  1
-
-
-class Data(object):
-
-    def __init__(self,pin):
-        self.pin=pin        
 
 class DigitalInputDevice(object):
-    __metaclass__ = BooType
-    value = False
+    #__metaclass__ = BackType
+    #value = False
 
     def __init__(self,pin, pull_up=False, active_state=None, bounce_time=None, pin_factory=None):
 
-        l=1
-
-        self.data=Data(3)
+        self.pin = Pin(pin)
 
     def __getattr__(self, attr):
-        print(attr)
-        self.data.__getattribute__(attr)
-        if attr == 'pin':
-            print(attr)
-        return  1
-
-
-
-
-
-
-class Boo(object):
-
-    #__metaclass__ = BooType
-
-    def __getattr__(self, attr):
+        
         print(attr)
 
-        if attr == 'pin':
-            print(attr)
-        return  1
+        if attr == 'value':
+  
+            print('hier')
+            value=88
+            return value
 
 
-boo = DigitalInputDevice(3)
 
-print(boo.pin) # raises an AttributeError like normal
+        return  'non yet defined name in simulated gpiozero'
+
+
+
+
+
+
+
+
+
+def testing_function():
+    node_name='noname_tool_manager'
+    rospy.init_node(node_name)
+
+    boo = DigitalInputDevice(3)
+
+    print('test')
+
+    print(boo.pin.number) 
+
+    print(boo.value)
+
+
+    print(boo.biz)
+
+    rospy.spin()
+
+if __name__ == '__main__':
+
+
+    testing_function()
+
