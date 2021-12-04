@@ -1,5 +1,4 @@
-#! /usr/bin/env python
-
+#!/usr/bin/env python
 import rospy
 
 class Pin(object):
@@ -10,23 +9,21 @@ class Pin(object):
 
 
 
-
 class DigitalInputDevice(object):
-    #__metaclass__ = BackType
-    #value = False
+
 
     def __init__(self,pin, pull_up=False, active_state=None, bounce_time=None, pin_factory=None):
 
         self.pin = Pin(pin)
+        rospy.set_param('pin'+str(pin)+'INPUTvalue',False)
 
     def __getattr__(self, attr):
         
-        print(attr)
+
 
         if attr == 'value':
   
-            print('hier')
-            value=88
+            value= rospy.get_param('pin'+str(self.pin.number)+'INPUTvalue')
             return value
 
 
@@ -35,8 +32,42 @@ class DigitalInputDevice(object):
 
 
 
+class DigitalOutputDevice(object):
+
+    def __init__(self,pin, pull_up=False, active_state=None, bounce_time=None, pin_factory=None):
+
+        self.pin = Pin(pin)
+        rospy.set_param('pin'+str(pin)+'OUTPUTvalue',False)
+
+    def __setattr__(self, attr, value):
+        
+ 
+        if attr == 'value':
+  
+            rospy.set_param('pin'+str(self.pin.number)+'INPUTvalue')
+            return 'seted'
 
 
+
+        return  'non yet defined name in simulated gpiozero'
+
+
+
+class PWMOutputDevice(object):
+
+
+    def __init__(self,pin, pull_up=False, active_state=None, bounce_time=None, pin_factory=None):
+
+        self.pin = Pin(pin)
+        #rospy.set_param('pin'+str(pin)+'OUTPUTvalue',False)
+
+    def __getattr__(self, attr):
+        
+ 
+    
+
+
+        return  'non yet defined name in simulated gpiozero'
 
 
 
@@ -53,8 +84,6 @@ def testing_function():
 
     print(boo.value)
 
-
-    print(boo.biz)
 
     rospy.spin()
 
