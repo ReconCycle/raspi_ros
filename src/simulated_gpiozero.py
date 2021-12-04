@@ -44,7 +44,7 @@ class DigitalOutputDevice(object):
  
         if attr == 'value':
   
-            rospy.set_param('pin'+str(self.pin.number)+'INPUTvalue')
+            rospy.set_param('pin'+str(self.pin.number)+'OUTPUTvalue')
             return 'seted'
 
 
@@ -77,12 +77,16 @@ def testing_function():
     rospy.init_node(node_name)
 
     boo = DigitalInputDevice(3)
+    fii = DigitalOutputDevice(4)
 
-    print('test')
+    print('test INPUT')
 
     print(boo.pin.number) 
 
     print(boo.value)
+
+    print('test OUTPUT')
+    fii.value=True
 
 
     rospy.spin()
