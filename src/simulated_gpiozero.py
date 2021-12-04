@@ -33,20 +33,25 @@ class DigitalInputDevice(object):
 
 
 class DigitalOutputDevice(object):
-
+ 
     def __init__(self,pin, pull_up=False, active_state=None, bounce_time=None, pin_factory=None):
+        #object.__setattr__(self,'pin',pin)
 
-        self.pin = Pin(pin)
+        self.pin= Pin(pin)
+        #print(object.pin)
+        #print(object.pin.number)
+
         rospy.set_param('pin'+str(pin)+'OUTPUTvalue',False)
 
     def __setattr__(self, attr, value):
-        
- 
+
         if attr == 'value':
   
-            rospy.set_param('pin'+str(self.pin.number)+'OUTPUTvalue')
+            rospy.set_param('pin'+str(self.pin.number)+'OUTPUTvalue',value)
+            
             return 'seted'
-
+        elif attr == 'pin':
+            self.__dict__[attr]=value
 
 
         return  'non yet defined name in simulated gpiozero'
@@ -87,6 +92,7 @@ def testing_function():
 
     print('test OUTPUT')
     fii.value=True
+    print(fii.pin.number) 
 
 
     rospy.spin()
