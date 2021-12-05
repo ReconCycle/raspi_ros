@@ -15,7 +15,7 @@ class DigitalInputDevice(object):
     def __init__(self,pin, pull_up=False, active_state=None, bounce_time=None, pin_factory=None):
 
         self.pin = Pin(pin)
-        rospy.set_param('pin'+str(pin)+'INPUTvalue',False)
+        rospy.set_param('~pin'+str(pin)+'INPUTvalue',False)
 
     def __getattr__(self, attr):
         
@@ -23,7 +23,7 @@ class DigitalInputDevice(object):
 
         if attr == 'value':
   
-            value= rospy.get_param('pin'+str(self.pin.number)+'INPUTvalue')
+            value= rospy.get_param('~pin'+str(self.pin.number)+'INPUTvalue')
             return value
 
 
@@ -41,13 +41,13 @@ class DigitalOutputDevice(object):
         #print(object.pin)
         #print(object.pin.number)
 
-        rospy.set_param('pin'+str(pin)+'OUTPUTvalue',False)
+        rospy.set_param('~pin'+str(pin)+'OUTPUTvalue',False)
 
     def __setattr__(self, attr, value):
 
         if attr == 'value':
   
-            rospy.set_param('pin'+str(self.pin.number)+'OUTPUTvalue',value)
+            rospy.set_param('~pin'+str(self.pin.number)+'OUTPUTvalue',value)
             
             return 'seted'
         elif attr == 'pin':

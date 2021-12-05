@@ -21,7 +21,6 @@ import os.path as path
 import argparse
 import sys
 
-print(sys.modules['gpiozero'])
 
 
 class PinService(object):
@@ -156,7 +155,7 @@ class ToolService(object):
 
     def configure_pins(self,configuration_path):
 
-        print(sys.modules['gpiozero'])
+
         #read active configuration
         with open(self.path, 'r') as file:
             config= yaml.load(file)
@@ -270,12 +269,9 @@ def main():
         #import simulated_gpiozero.simulated_gpiozero.DigitalInputDevice
         from simulated_gpiozero import DigitalInputDevice, DigitalOutputDevice, PWMOutputDevice
         gpiozero.DigitalInputDevice= DigitalInputDevice
-        
-        #sys.modules['gpiozero'] = __import__('simulated_gpiozero')
-        print(sys.modules['gpiozero'])
-        #from simulated_gpiozero.simulated_gpiozero import DigitalInputDevice
-        #from simulated_gpiozero.simulated_gpiozero import DigitalOutputDevice
-        #from simulated_gpiozero.simulated_gpiozero import PWMOutputDevice
+        gpiozero.DigitalOutputDevice= DigitalOutputDevice
+        gpiozero.PWMOutputDevice= PWMOutputDevice
+
         rospy.loginfo(str(node_name)+ " node working in simulation mode")
 
 
