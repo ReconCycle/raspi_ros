@@ -262,14 +262,14 @@ def main():
 
     rospy.loginfo(active_config_path)
 
-    simulate = rospy.get_parama('/sim_raspi',False)
+    simulate = rospy.get_param('/sim_raspi',False)
 
 
     if simulate:
         from simulated_gpiozero import DigitalInputDevice
         from simulated_gpiozero import DigitalOutputDevice
         from simulated_gpiozero import PWMOutputDevice
-        ROS_INFO(str(node_name)+ " node working in simulation mode")
+        rospy.loginfo(str(node_name)+ " node working in simulation mode")
 
 
     tool_service = ToolService(node_name,active_config_path)
