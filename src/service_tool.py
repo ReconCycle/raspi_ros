@@ -145,17 +145,13 @@ class PinMotorAngleService(PinService):
 
 class ToolService(object):
 
-    def __init__(self,node_name,active_config_path,simulate=False):
+    def __init__(self,node_name,active_config_path):
 
         self.node_name=node_name
         self.path=active_config_path
         self.restart_service=rospy.Service('~restart_node', Trigger, self.restart)
 
 
-        self.simulate = simulate
-        if simulate:
-            ROS_INFO(str(node_name)+ " node working in simulation mode")
-        
         self.configure_pins(self.path)
      
 
@@ -265,6 +261,16 @@ def main():
         active_config_path= path.join(config_path,'active_config/active_config.yaml')
 
     rospy.loginfo(active_config_path)
+
+    simulate = rospy.get_parama('/sim_raspi',False)
+
+
+    if simulate:
+        from simulated_gpiozero import DigitalInputDevice
+        from simulated_gpiozero import DigitalOutputDevice
+        from simulated_gpiozero import PWMOutputDevice
+        ROS_INFO(str(node_name)+ " node working in simulation mode")
+
 
     tool_service = ToolService(node_name,active_config_path)
 
