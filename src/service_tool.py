@@ -5,7 +5,10 @@ from digital_interface_msgs.srv import PinStateRead,PinStateWrite,PinStateWriteR
 
 from std_srvs.srv import Trigger,TriggerResponse
 
-
+import gpiozero
+#from gpiozero import gpiozero.DigitalInputDevice
+#from gpiozero import gpiozero.DigitalOutputDevice
+#from gpiozero import gpiozero.PWMOutputDevice
 
 import rospy
 
@@ -14,15 +17,11 @@ import yaml
 from rospy_message_converter import message_converter
 
 
-from gpiozero import DigitalInputDevice
-from gpiozero import DigitalOutputDevice
-from gpiozero import PWMOutputDevice
-
 import os.path as path
 import argparse
 import sys
 
-
+print(sys.modules['gpiozero'])
 
 
 class PinService(object):
@@ -157,6 +156,7 @@ class ToolService(object):
 
     def configure_pins(self,configuration_path):
 
+        print(sys.modules['gpiozero'])
         #read active configuration
         with open(self.path, 'r') as file:
             config= yaml.load(file)
@@ -178,7 +178,7 @@ class ToolService(object):
 
             elif pin_configs[i]['actual_config']=='DigitalInput':
                 
-                hardware_interface=DigitalInputDevice(pin_configs[i]['pin_number'])
+                hardware_interface=gpiozero.DigitalInputDevice(pin_configs[i]['pin_number'])
  
                 self.pin_interactions.append(hardware_interface)
                 #join service and interaction in one class
@@ -187,7 +187,7 @@ class ToolService(object):
 
             elif pin_configs[i]['actual_config']=='DigitalOutput':
 
-                hardware_interface=DigitalOutputDevice(pin_configs[i]['pin_number'])
+                hardware_interface=gpiozero.DigitalOutputDevice(pin_configs[i]['pin_number'])
 
                 self.pin_interactions.append(hardware_interface)
                 #join service and interaction in one class
@@ -196,10 +196,10 @@ class ToolService(object):
 
             elif pin_configs[i]['actual_config']=='PWM':
                 if not pin_configs[i]['config_parameters']:
-                    hardware_interface=PWMOutputDevice(pin_configs[i]['pin_number'])
+                    hardware_interface=gpiozero.PWMOutputDevice(pin_configs[i]['pin_number'])
 
                 else:          
-                    hardware_interface=PWMOutputDevice(pin_configs[i]['pin_number'])
+                    hardware_interface=gpiozero.PWMOutputDevice(pin_configs[i]['pin_number'])
                     #frequency=int([0]),initial_value=float(pin_configs[i]['config_parameters'][1])
 
                 self.pin_interactions.append(hardware_interface)
@@ -266,10 +266,18 @@ def main():
 
 
     if simulate:
-        from simulated_gpiozero import DigitalInputDevice
-        from simulated_gpiozero import DigitalOutputDevice
-        from simulated_gpiozero import PWMOutputDevice
+        #from simulated_gpiozero.simulated_gpiozero import DigitalInputDevice
+        #import simulated_gpiozero.simulated_gpiozero.DigitalInputDevice
+        from simulated_gpiozero import DigitalInputDevice, DigitalOutputDevice, PWMOutputDevice
+        gpiozero.DigitalInputDevice= DigitalInputDevice
+        
+        #sys.modules['gpiozero'] = __import__('simulated_gpiozero')
+        print(sys.modules['gpiozero'])
+        #from simulated_gpiozero.simulated_gpiozero import DigitalInputDevice
+        #from simulated_gpiozero.simulated_gpiozero import DigitalOutputDevice
+        #from simulated_gpiozero.simulated_gpiozero import PWMOutputDevice
         rospy.loginfo(str(node_name)+ " node working in simulation mode")
+
 
 
     tool_service = ToolService(node_name,active_config_path)
