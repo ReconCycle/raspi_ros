@@ -15,7 +15,9 @@ class DigitalInputDevice(object):
     def __init__(self,pin, pull_up=False, active_state=None, bounce_time=None, pin_factory=None):
 
         self.pin = Pin(pin)
-        self.param_name= "/simulate"+rospy.get_name() + "/" +str(pin)
+        self.param_name = "/simulate" + rospy.get_name() + "/" +str(pin)
+        print(self.param_name)
+        print(   "/simulate" + rospy.get_name() + "/" +str(pin))
         rospy.set_param(self.param_name+'/value',False)  
         rospy.set_param(self.param_name+'/type',"DI")
 
@@ -45,7 +47,7 @@ class DigitalOutputDevice(object):
         #print(object.pin.number)
 
         #rospy.set_param('~pin'+str(pin)+'OUTPUTvalue',False)
-        self.param_name= "/simulate"+rospy.get_name() + "/" +str(pin)
+        self.param_name=  "/simulate" + rospy.get_name() + "/" +str(pin)
         rospy.set_param(self.param_name+'/value',False)  
         rospy.set_param(self.param_name+'/type',"DO")
 
