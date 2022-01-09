@@ -6,83 +6,55 @@ class Pin(object):
         self.number = pin
 
 
-
-
-
 class DigitalInputDevice(object):
     param_name= ""
 
-    def __init__(self,pin, pull_up=False, active_state=None, bounce_time=None, pin_factory=None):
+    def __init__(self, pin, pull_up=False, active_state=None, bounce_time=None, pin_factory=None):
 
-        self.pin = Pin(pin)
+        #self.pin_n = Pin(pin)
+        self.pin=pin
         self.param_name = "/simulate" + rospy.get_name() + "/" +str(pin)
-        print(self.param_name)
-        print(   "/simulate" + rospy.get_name() + "/" +str(pin))
+
         rospy.set_param(self.param_name+'/value',False)  
         rospy.set_param(self.param_name+'/type',"DI")
 
     def __getattr__(self, attr):
         
-
-
         if attr == 'value':
   
             value= rospy.get_param(self.param_name+'/value')
             return value
 
-
-
         return  'non yet defined name in simulated gpiozero'
-
 
 
 class DigitalOutputDevice(object):
     param_name= ""
-     
-    def __init__(self,pin, pull_up=False, active_state=None, bounce_time=None, pin_factory=None):
-        #object.__setattr__(self,'pin',pin)
 
-        self.pin= Pin(pin)
-        #print(object.pin)
-        #print(object.pin.number)
+    def __init__(self, pin, pull_up=False, active_state=None, bounce_time=None, pin_factory=None):
 
-        #rospy.set_param('~pin'+str(pin)+'OUTPUTvalue',False)
-        self.param_name=  "/simulate" + rospy.get_name() + "/" +str(pin)
-        rospy.set_param(self.param_name+'/value',False)  
+        #self.pin_n = Pin(pin)
+        self.pin=pin
+        self.param_name = "/simulate" + rospy.get_name() + "/" +str(pin)
+
+        rospy.set_param(self.param_name+'/value',False)
         rospy.set_param(self.param_name+'/type',"DO")
-
+        
     def __setattr__(self, attr, value):
+        
+
 
         if attr == 'value':
   
             rospy.set_param(self.param_name+'/value',value)
-            
             return 'seted'
-        elif attr == 'pin':
+        elif  attr == 'pin':
             self.__dict__[attr]=value
-
-
-        return  'non yet defined name in simulated gpiozero'
-
-
-
-class PWMOutputDevice(object):
-
-
-    def __init__(self,pin, pull_up=False, active_state=None, bounce_time=None, pin_factory=None):
-
-        self.pin = Pin(pin)
-        #rospy.set_param('pin'+str(pin)+'OUTPUTvalue',False)
-
-    def __getattr__(self, attr):
-        
- 
-    
-
-
-        return  'non yet defined name in simulated gpiozero'
-
-
+            return  'non yet defined name in simulated gpiozero'
+        elif  attr == 'param_name':
+            self.__dict__[attr]=value
+            return  'non yet defined name in simulated gpiozero'
+  
 
 
 def testing_function():
@@ -94,13 +66,13 @@ def testing_function():
 
     print('test INPUT')
 
-    print(boo.pin.number) 
+    print(boo.pin) 
 
     print(boo.value)
 
     print('test OUTPUT')
     fii.value=True
-    print(fii.pin.number) 
+    print(fii.pin) 
 
 
     rospy.spin()
