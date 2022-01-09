@@ -10,7 +10,7 @@ class Pin(object):
 
 
 class DigitalInputDevice(object):
-
+    param_name= ""
 
     def __init__(self,pin, pull_up=False, active_state=None, bounce_time=None, pin_factory=None):
 
@@ -35,7 +35,8 @@ class DigitalInputDevice(object):
 
 
 class DigitalOutputDevice(object):
- 
+    param_name= ""
+     
     def __init__(self,pin, pull_up=False, active_state=None, bounce_time=None, pin_factory=None):
         #object.__setattr__(self,'pin',pin)
 
