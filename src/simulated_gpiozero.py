@@ -26,6 +26,15 @@ class DigitalInputDevice(object):
             return value
 
         return  'non yet defined name in simulated gpiozero'
+     
+    def close(self):
+
+        rospy.delete_param(self.param_name+'/value')
+        rospy.delete_param(self.param_name+'/type')
+        success = True
+
+        return  success
+
 
 
 class DigitalOutputDevice(object):
@@ -56,6 +65,14 @@ class DigitalOutputDevice(object):
         
      
         return  'non yet defined name in simulated gpiozero'
+     
+    def close(self):
+
+        rospy.delete_param(self.param_name+'/value')
+        rospy.delete_param(self.param_name+'/type')
+        success = True
+
+        return  success
      
      
 class PWMOutputDevice(object):
