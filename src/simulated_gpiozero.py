@@ -11,8 +11,8 @@ class DigitalInputDevice(object):
 
     def __init__(self, pin, pull_up=False, active_state=None, bounce_time=None, pin_factory=None):
 
-        #self.pin_n = Pin(pin)
-        self.pin=pin
+        self.pin = Pin(pin)
+        #self.pin=pin
         self.param_name = "/simulate" + rospy.get_name() + "/" +str(pin)
 
         rospy.set_param(self.param_name+'/value',False)  
@@ -24,7 +24,7 @@ class DigitalInputDevice(object):
   
             value= rospy.get_param(self.param_name+'/value')
             return value
-
+         
         return  'non yet defined name in simulated gpiozero'
      
     def close(self):
@@ -42,8 +42,8 @@ class DigitalOutputDevice(object):
 
     def __init__(self, pin, pull_up=False, active_state=None, bounce_time=None, pin_factory=None):
 
-        #self.pin_n = Pin(pin)
-        self.pin=pin
+        self.pin = Pin(pin)
+        #self.pin=pin
         self.param_name = "/simulate" + rospy.get_name() + "/" +str(pin)
 
         rospy.set_param(self.param_name+'/value',False)
