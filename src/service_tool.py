@@ -58,19 +58,27 @@ class PinWriteService(PinService):
         service_type=PinStateWrite
         PinService.__init__(self,pin_interaction,service_name,service_type)
 
-
-
+        self.param_name = "/raspi/" + service_name+ "/" 
+        rospy.set_param(self.param_name+'value',False)  
+        
     def callback(self,request):
-
+        
+        #write value on parameter server
+        rospy.set_param(self.param_name+'value',request.value)  
+        
+        #set actual value
         interaction=self.pin_interaction
 
         interaction.value=request.value
         response=PinStateWriteResponse()
         response.success=True
 
-        
         return response
-
+    
+    def __del__(self):
+        #clean from parameter server
+        print("deliting parameter")
+        rospy.delete_param(self.param_name+'value')
 
 class PinPWMService(PinService):
 
@@ -149,8 +157,15 @@ class ToolService(object):
         self.path=active_config_path
         self.restart_service=rospy.Service('~restart_node', Trigger, self.restart)
 
+        # services presented to ros system
+        self.pin_services=[]
 
+        # hardware interaction (set,read...)
+        self.pin_interactions=[]
+        
         self.configure_pins(self.path)
+        
+        
      
 
     def configure_pins(self,configuration_path):
@@ -159,6 +174,14 @@ class ToolService(object):
         #read active configuration
         with open(self.path, 'r') as file:
             config= yaml.load(file)
+            
+        # delete objects if list not empty
+        
+        for i in self.pin_services:
+            del i
+            
+        for i in self.pin_interactions:
+            del i
 
         # services presented to ros system
         self.pin_services=[]
