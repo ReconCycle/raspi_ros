@@ -80,6 +80,36 @@ class PinWriteService(PinService):
         print("deliting parameter")
         rospy.delete_param(self.param_name+'value')
 
+class TimedPinWriteService(PinService):
+
+    def __init__(self,pin_interaction,service_name):
+        service_type=PinStateWrite
+        PinService.__init__(self,pin_interaction,service_name,service_type)
+
+        self.param_name = "/raspi/" + service_name+ "/" 
+        rospy.set_param(self.param_name+'value',False)  
+        
+    def callback(self,request):
+        
+        #write value on parameter server
+        rospy.set_param(self.param_name+'value',request.value)  
+        
+        #set actual value
+        interaction=self.pin_interaction
+
+        interaction.value=request.value
+        rospy.sleep(2)
+        interaction.value=not request.value
+        response=PinStateWriteResponse()
+        response.success=True
+
+        return response
+    
+    def __del__(self):
+        #clean from parameter server
+        print("deliting parameter")
+        rospy.delete_param(self.param_name+'value')
+
 class PinPWMService(PinService):
 
     def __init__(self,pin_interaction,service_name,signal_to_angle=1):
@@ -214,6 +244,15 @@ class ToolService(object):
                 self.pin_interactions.append(hardware_interface)
                 #join service and interaction in one class
                 pin_service=PinWriteService(hardware_interface,pin_configs[i]['service_name'])
+                self.pin_services.append(pin_service)
+
+            elif pin_configs[i]['actual_config']=='TimedDigitalOutput':
+
+                hardware_interface=gpiozero.DigitalOutputDevice(pin_configs[i]['pin_number'])
+
+                self.pin_interactions.append(hardware_interface)
+                #join service and interaction in one class
+                pin_service=TimedPinWriteService(hardware_interface,pin_configs[i]['service_name'])
                 self.pin_services.append(pin_service)
 
             elif pin_configs[i]['actual_config']=='PWM':
